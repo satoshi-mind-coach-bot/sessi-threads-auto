@@ -1,0 +1,51 @@
+name: Sessi Threads Auto Post
+
+on:
+  schedule:
+    # JST 7:00  = UTC 前日 22:00
+    - cron: '0 22 * * *'
+    # JST 8:40  = UTC 前日 23:40
+    - cron: '40 23 * * *'
+    # JST 10:20 = UTC 1:20
+    - cron: '20 1 * * *'
+    # JST 12:00 = UTC 3:00
+    - cron: '0 3 * * *'
+    # JST 13:40 = UTC 4:40
+    - cron: '40 4 * * *'
+    # JST 15:20 = UTC 6:20
+    - cron: '20 6 * * *'
+    # JST 17:00 = UTC 8:00
+    - cron: '0 8 * * *'
+    # JST 18:40 = UTC 9:40
+    - cron: '40 9 * * *'
+    # JST 20:20 = UTC 11:20
+    - cron: '20 11 * * *'
+    # JST 22:00 = UTC 13:00
+    - cron: '0 13 * * *'
+  workflow_dispatch:
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Post to Threads
+        env:
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+          THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
+        run: python poster.py
+
+      - name: Save updated queue
+        run: |
+          git config user.email "bot@sessi-threads"
+          git config user.name "SessiBot"
+          git add data/
+          git diff --staged --quiet || git commit -m "Update queue"
+          git push
