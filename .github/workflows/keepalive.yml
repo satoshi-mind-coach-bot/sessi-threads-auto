@@ -2,8 +2,8 @@ name: Keepalive
 
 on:
   schedule:
-    # 毎週月曜 JST 6:00 = UTC 日曜 21:00
-    - cron: '0 21 * * 0'
+    # 毎日 JST 6:00 = UTC 前日 21:00
+    - cron: '0 21 * * *'
   workflow_dispatch:
 
 jobs:
@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      actions: write
     steps:
       - uses: actions/checkout@v4
 
@@ -20,3 +21,13 @@ jobs:
           git config user.name "SessiBot"
           git commit --allow-empty -m "keepalive: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
           git push
+
+      - name: Re-enable post schedule
+        run: gh workflow enable post.yml
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Trigger morning post
+        run: gh workflow run post.yml
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

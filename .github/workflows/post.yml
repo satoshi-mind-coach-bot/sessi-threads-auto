@@ -29,6 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      actions: write
     steps:
       - uses: actions/checkout@v4
 
@@ -57,3 +58,8 @@ jobs:
           git add data/
           git diff --staged --quiet || git commit -m "Update queue"
           git push
+
+      - name: Re-enable schedule (self-heal)
+        run: gh workflow enable post.yml
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
