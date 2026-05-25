@@ -1,0 +1,22 @@
+name: Keepalive
+
+on:
+  schedule:
+    # 毎週月曜 JST 6:00 = UTC 日曜 21:00
+    - cron: '0 21 * * 0'
+  workflow_dispatch:
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Keep workflow alive
+        run: |
+          git config user.email "bot@sessi-threads"
+          git config user.name "SessiBot"
+          git commit --allow-empty -m "keepalive: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          git push
