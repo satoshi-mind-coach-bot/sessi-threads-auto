@@ -4,22 +4,12 @@ on:
   schedule:
     # JST 7:00  = UTC 前日 22:00
     - cron: '0 22 * * *'
-    # JST 8:40  = UTC 前日 23:40
-    - cron: '40 23 * * *'
-    # JST 10:20 = UTC 1:20
-    - cron: '20 1 * * *'
-    # JST 12:00 = UTC 3:00
-    - cron: '0 3 * * *'
-    # JST 13:40 = UTC 4:40
-    - cron: '40 4 * * *'
-    # JST 15:20 = UTC 6:20
-    - cron: '20 6 * * *'
-    # JST 17:00 = UTC 8:00
-    - cron: '0 8 * * *'
-    # JST 18:40 = UTC 9:40
-    - cron: '40 9 * * *'
-    # JST 20:20 = UTC 11:20
-    - cron: '20 11 * * *'
+    # JST 10:45 = UTC 1:45
+    - cron: '45 1 * * *'
+    # JST 14:30 = UTC 5:30
+    - cron: '30 5 * * *'
+    # JST 18:15 = UTC 9:15
+    - cron: '15 9 * * *'
     # JST 22:00 = UTC 13:00
     - cron: '0 13 * * *'
   workflow_dispatch:
